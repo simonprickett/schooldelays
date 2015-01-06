@@ -22,3 +22,8 @@ Why have to sudo python to get Unicorn Hat working? -- looks like this is a
 known thing:
 
 "The method UnicornHat uses to actually drive the pixels involves some low-level memory twiddling that only the root user has access to. It's a bit of a hassle, but there's currently no way around it."
+
+Here's an example of the Unicorn Hat working on my Raspberry Pi B+, this 
+will be driven by this script in the near future...
+
+https://www.youtube.com/watch?v=caxBljIjARE
