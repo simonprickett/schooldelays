@@ -44,19 +44,31 @@ def getSchoolStatus():
 	mainContentDiv = htmlTree.xpath('//div[@id="mainContent"]/p/strong/text()')[0]
 	
 	if (mainContentDiv.find('no emergency announcements') > -1):
+		# Normal school day no schedule change
 		return 1
-	else:
-		# TODO is it a late start, early release or snow day
-		# Possible school conditions listed here http://www.fcps.edu/news/conditions.shtml
+	elif (mainContentDiv.find('open two hours late') > -1):
+		# School will open two hours later than usual
 		return 2
+	elif (mainContentDiv.find('close two hours early') > -1):
+		# School opens at normal time with early dismissal
+		return 3
+	elif (mainContentDiv.find('will be closed today') > -1):
+		# School is closed
+		return 4
+	else:
+		# School open but evening and/or afternoon activities canceled
+		return 5
 
 #####
 # Update the display
 #
 # schoolStatus:
 # 0: Not a school day
-# 1: No emergency
-# 2: Some sort of emergency TODO define further
+# 1: No emergency, normal day
+# 2: Two hour delay opening
+# 3: Early closing, two hours ahead of normal
+# 4: Closed all day
+# 5: Open, but evening or afternoon activities canceled
 #####
 def updateDisplay():
 	schoolStatus = 0
@@ -65,11 +77,17 @@ def updateDisplay():
 		schoolStatus = getSchoolStatus()
 
 	if (schoolStatus == 0):
-		print "No school today."
+		print "Not a school day."
 	elif (schoolStatus == 1):
 		print "Normal school day."
 	elif (schoolStatus == 2):
-		print "Some sort of schedule change."
+		print "Two hour start delay."
+	elif (schoolStatus == 3):
+		print "Two hour early dismissal."
+	elif (schoolStatus == 4):
+		print "School closed today."
+	elif (schoolStatus == 5):
+		print "Extra curricular activities canceled."
 
 #####
 # Entry point, check school status over and over
