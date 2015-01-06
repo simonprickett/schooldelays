@@ -18,4 +18,7 @@ sudo pip install requests
 sudo pip install schedule
 ... unicorn hat setup
 
-Why have to sudo python to get Unicorn Hat working?
+Why have to sudo python to get Unicorn Hat working? -- looks like this is a 
+known thing:
+
+"The method UnicornHat uses to actually drive the pixels involves some low-level memory twiddling that only the root user has access to. It's a bit of a hassle, but there's currently no way around it."
