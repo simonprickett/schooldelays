@@ -46,6 +46,7 @@ def getSchoolStatus():
 		return 1
 	else:
 		# TODO is it a late start, early release or snow day
+		# Possible school conditions listed here http://www.fcps.edu/news/conditions.shtml
 		return 2
 
 #####
