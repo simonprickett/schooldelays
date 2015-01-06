@@ -6,6 +6,7 @@
 
 from lxml import html
 import requests
+import schedule
 import time
 
 #####
@@ -48,21 +49,31 @@ def getSchoolStatus():
 		return 2
 
 #####
-# Entry point
+# Update the display
 #
 # schoolStatus:
 # 0: Not a school day
 # 1: No emergency
 # 2: Some sort of emergency TODO define further
 #####
-schoolStatus = 0
+def updateDisplay():
+	schoolStatus = 0
 
-if (isSchoolDay()):
-	schoolStatus = getSchoolStatus()
+	if (isSchoolDay()):
+		schoolStatus = getSchoolStatus()
 
-if (schoolStatus == 0):
-	print "No school today."
-elif (schoolStatus == 1):
-	print "Normal school day."
-elif (schoolStatus == 2):
-	print "Some sort of schedule change."
+	if (schoolStatus == 0):
+		print "No school today."
+	elif (schoolStatus == 1):
+		print "Normal school day."
+	elif (schoolStatus == 2):
+		print "Some sort of schedule change."
+
+#####
+# Entry point, check school status over and over
+#####
+# TODO make the schedule more realistic
+schedule.every(10).seconds.do(updateDisplay)
+while True:
+	schedule.run_pending()
+	time.sleep(1)
