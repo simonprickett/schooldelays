@@ -41,53 +41,73 @@ def getWebPage():
 #####
 def getSchoolStatus():
 	htmlTree = getWebPage()
+	# <div id="mainContent"><p><strong>There are no emergency announements at this time. </strong></p>
 	mainContentDiv = htmlTree.xpath('//div[@id="mainContent"]/p/strong/text()')[0]
 	
 	if (mainContentDiv.find('no emergency announcements') > -1):
 		# Normal school day no schedule change
-		return 1
-	elif (mainContentDiv.find('open two hours late') > -1):
-		# School will open two hours later than usual
-		return 2
-	elif (mainContentDiv.find('close two hours early') > -1):
-		# School opens at normal time with early dismissal
-		return 3
-	elif (mainContentDiv.find('will be closed today') > -1):
-		# School is closed
-		return 4
-	else:
-		# School open but evening and/or afternoon activities canceled
-		return 5
+		return 0
+
+	# OK so it's not a normal day, let's find a condition... and
+	# there might be multiple announcements
+	mainContentParagraphs = htmlTree.xpath('//div[@id="mainContent"]/p/text()')
+	for p in mainContentParagraphs:
+		i =  p.find('(Condition ')
+		if (i > -1):
+			# Found it, which condition is it?
+			# Possibilities are listed here: http://www.fcps.edu/news/conditions.shtml
+			if (p.find('(Condition 1)') > -1):
+				# Condition 1: All day closing (inc offices)
+				return 1
+			elif (p.find('(Condition 2') > -1):
+				# Condition 2: All day closing
+				return 2
+			elif (p.find('(Condition 3') > -1):
+				# Condition 3: 2 hour delay
+				return 3
+			elif (p.find('(Condition 4') > -1):
+				# Condition 4: 2 hour early dismissal
+				return 4
+			elif (p.find('(Condition 5') > -1):
+				# Condition 5: closed with delayed office opening
+				return 5
+			elif (p.find('(Condition 6') > -1):
+				# Condition 6: afternoon and evening activities canceled
+				return 6
+			elif (p.find('(Condition 7') > -1):
+				# Condition 7: evening activities canceled
+				return 7
+
+	# If we got here we have no idea what is going on
+	return 99
 
 #####
 # Update the display
 #
-# schoolStatus:
-# 0: Not a school day
-# 1: No emergency, normal day
-# 2: Two hour delay opening
-# 3: Early closing, two hours ahead of normal
-# 4: Closed all day
-# 5: Open, but evening or afternoon activities canceled
 #####
 def updateDisplay():
-	schoolStatus = 0
+	# Treating status -1 as not a school day
+	schoolStatus = -1 
 
 	if (isSchoolDay()):
 		schoolStatus = getSchoolStatus()
 
 	if (schoolStatus == 0):
-		print "Not a school day."
-	elif (schoolStatus == 1):
-		print "Normal school day."
-	elif (schoolStatus == 2):
-		print "Two hour start delay."
+		# School day and school is open
+		print "Condition " + str(schoolStatus) + " school is OPEN"
+	elif (schoolStatus == 1 or schoolStatus == 2 or schoolStatus == 5):
+		# School is closed all day
+		print "Condition " + str(schoolStatus) + " school is CLOSED"
 	elif (schoolStatus == 3):
-		print "Two hour early dismissal."
+		print "Condition " + str(schoolStatus) + " school is DELAYED 2 HOURS"
 	elif (schoolStatus == 4):
-		print "School closed today."
-	elif (schoolStatus == 5):
-		print "Extra curricular activities canceled."
+		print "Condition " + str(schoolStatus) + " school will CLOSE 2 HOURS EARLY"
+	elif (schoolStatus == 6):
+		print "Condition " + str(schoolStatus) + " school is OPEN with AFTERNOON AND EVENING ACTIVITIES CANCELED"
+	elif (schoolStatus == 7):
+		print "Condition " + str(schoolStatus) + " school IS OPEN with EVENING ACTIVITIES CANCELED"
+	else:
+		print "Condition unknown, please check with the school system"
 
 #####
 # Entry point, check school status over and over
