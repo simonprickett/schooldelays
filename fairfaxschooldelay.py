@@ -20,11 +20,12 @@ def isSchoolDay():
 	if (currentDay == 'Saturday' or currentDay == 'Sunday'):
 		return False
 	else:
-		schoolHolidays = [ '01/19/15', '01/30/15', '02/02/15', '02/16/15', 
-		                   '03/16/15', '03/30/15', '03/21/15', '04/01/15', 
-		                   '04/02/15', '04/03/15' ]
-		return time.strftime('%x') not in schoolHolidays
-
+		# Make sure today is not a school holiday
+		return time.strftime('%x') not in [ 
+			'01/19/15', '01/30/15', '02/02/15', 
+			'02/16/15', '03/16/15', '03/30/15', 
+			'03/21/15', '04/01/15', '04/02/15', 
+			'04/03/15' ]
 #####
 # Get the page data from the school system
 #####
