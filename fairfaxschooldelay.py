@@ -50,31 +50,32 @@ def getSchoolStatus():
 
 	# OK so it's not a normal day, let's find a condition... and
 	# there might be multiple announcements
-	mainContentParagraphs = htmlTree.xpath('//div[@id="mainContent"]/p/text()')
+	mainContentParagraphs = htmlTree.xpath('//div[@id="mainContent"]/p')
 	for p in mainContentParagraphs:
-		i =  p.find('(Condition ')
+		txt = p.text_content()
+		i =  txt.find('Condition ')
 		if (i > -1):
 			# Found it, which condition is it?
 			# Possibilities are listed here: http://www.fcps.edu/news/conditions.shtml
-			if (p.find('(Condition 1)') > -1):
+			if (txt.find('Condition 1') > -1):
 				# Condition 1: All day closing (inc offices)
 				return 1
-			elif (p.find('(Condition 2') > -1):
+			elif (txt.find('Condition 2') > -1):
 				# Condition 2: All day closing
 				return 2
-			elif (p.find('(Condition 3') > -1):
+			elif (txt.find('Condition 3') > -1):
 				# Condition 3: 2 hour delay
 				return 3
-			elif (p.find('(Condition 4') > -1):
+			elif (txt.find('Condition 4') > -1):
 				# Condition 4: 2 hour early dismissal
 				return 4
-			elif (p.find('(Condition 5') > -1):
+			elif (txt.find('Condition 5') > -1):
 				# Condition 5: closed with delayed office opening
 				return 5
-			elif (p.find('(Condition 6') > -1):
+			elif (txt.find('Condition 6') > -1):
 				# Condition 6: afternoon and evening activities canceled
 				return 6
-			elif (p.find('(Condition 7') > -1):
+			elif (txt.find('(Condition 7') > -1):
 				# Condition 7: evening activities canceled
 				return 7
 
@@ -113,7 +114,7 @@ def updateDisplay():
 # Entry point, check school status over and over
 #####
 # TODO make the schedule more realistic
-schedule.every(10).seconds.do(updateDisplay)
+schedule.every(30).seconds.do(updateDisplay)
 while True:
 	schedule.run_pending()
 	time.sleep(1)
