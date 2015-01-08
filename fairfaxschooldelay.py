@@ -50,8 +50,7 @@ def getSchoolStatus():
 
 	# OK so it's not a normal day, let's find a condition... and
 	# there might be multiple announcements
-	mainContentParagraphs = htmlTree.xpath('//div[@id="mainContent"]/p')
-	for p in mainContentParagraphs:
+	for p in htmlTree.xpath('//div[@id="mainContent"]'):
 		txt = p.text_content()
 		i =  txt.find('Condition ')
 		if (i > -1):
