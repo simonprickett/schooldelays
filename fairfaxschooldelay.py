@@ -93,22 +93,25 @@ def updateDisplay():
 	if (isSchoolDay()):
 		schoolStatus = getSchoolStatus()
 
-	if (schoolStatus == 0):
-		# School day and school is open
-		print "Condition " + str(schoolStatus) + " school is OPEN"
-	elif (schoolStatus == 1 or schoolStatus == 2 or schoolStatus == 5):
-		# School is closed all day
-		print "Condition " + str(schoolStatus) + " school is CLOSED"
-	elif (schoolStatus == 3):
-		print "Condition " + str(schoolStatus) + " school is DELAYED 2 HOURS"
-	elif (schoolStatus == 4):
-		print "Condition " + str(schoolStatus) + " school will CLOSE 2 HOURS EARLY"
-	elif (schoolStatus == 6):
-		print "Condition " + str(schoolStatus) + " school is OPEN with AFTERNOON AND EVENING ACTIVITIES CANCELED"
-	elif (schoolStatus == 7):
-		print "Condition " + str(schoolStatus) + " school IS OPEN with EVENING ACTIVITIES CANCELED"
+		if (schoolStatus == 0):
+			# School day and school is open
+			print "Condition " + str(schoolStatus) + " school is OPEN"
+		elif (schoolStatus == 1 or schoolStatus == 2 or schoolStatus == 5):
+			# School is closed all day
+			print "Condition " + str(schoolStatus) + " school is CLOSED"
+		elif (schoolStatus == 3):
+			print "Condition " + str(schoolStatus) + " school is DELAYED 2 HOURS"
+		elif (schoolStatus == 4):
+			print "Condition " + str(schoolStatus) + " school will CLOSE 2 HOURS EARLY"
+		elif (schoolStatus == 6):
+			print "Condition " + str(schoolStatus) + " school is OPEN with AFTERNOON AND EVENING ACTIVITIES CANCELED"
+		elif (schoolStatus == 7):
+			print "Condition " + str(schoolStatus) + " school IS OPEN with EVENING ACTIVITIES CANCELED"
+		else:
+			print "Condition unknown, please check with the school system"
 	else:
-		print "Condition unknown, please check with the school system"
+		# Not a school day
+		print "Today is a weekend or school holiday"
 
 #####
 # Entry point, check school status over and over
