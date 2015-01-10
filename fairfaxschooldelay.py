@@ -13,12 +13,15 @@ import unicornhat as UH
 #####
 # Send data to the Unicorn Hat
 #####
-def updateLEDs(r,g,b):
+def updateLEDs(r, g, b, d):
+	# Fill in LEDs a row at a time from top left
+	# to bottom right
 	for y in range(8):
 		for x in range(8):
 			UH.set_pixel(x, y, r, g, b)
 			UH.show()
-			time.sleep(0.05)	
+			if (d > 0):
+				time.sleep(d)	
 
 #####
 # Is it a school day today?
@@ -97,6 +100,9 @@ def getSchoolStatus():
 #
 #####
 def updateDisplay():
+	# Clear the display
+	updateLEDs(0, 0, 0, 0)
+
 	# Treating status -1 as not a school day
 	schoolStatus = -1 
 
@@ -106,32 +112,35 @@ def updateDisplay():
 		if (schoolStatus == 0):
 			# School day and school is open
 			print "Condition " + str(schoolStatus) + " school is OPEN"
-			updateLEDs(0, 255, 0)
+			updateLEDs(0, 255, 0, 0.05)
 		elif (schoolStatus == 1 or schoolStatus == 2 or schoolStatus == 5):
 			# School is closed all day
 			print "Condition " + str(schoolStatus) + " school is CLOSED"
-			updateLEDs(255, 0, 0)
+			updateLEDs(255, 0, 0, 0.05)
 		elif (schoolStatus == 3):
 			print "Condition " + str(schoolStatus) + " school is DELAYED 2 HOURS"
-			updateLEDs(255, 255, 0)
+			updateLEDs(255, 255, 0, 0.05)
 		elif (schoolStatus == 4):
 			print "Condition " + str(schoolStatus) + " school will CLOSE 2 HOURS EARLY"
+			updateLEDs(0, 255, 0, 0.05)
 		elif (schoolStatus == 6):
 			print "Condition " + str(schoolStatus) + " school is OPEN with AFTERNOON AND EVENING ACTIVITIES CANCELED"
+			updateLEDs(0, 255, 0, 0.05)
 		elif (schoolStatus == 7):
 			print "Condition " + str(schoolStatus) + " school IS OPEN with EVENING ACTIVITIES CANCELED"
+			updateLEDs(0, 255, 0, 0.05)
 		else:
 			print "Condition unknown, please check with the school system"
 	else:
 		# Not a school day
 		print "Today is a weekend or school holiday"
+		updateLEDs(255, 0, 0, 0.05)
 
 #####
 # Entry point, check school status over and over
 #####
 # TODO make the schedule more realistic
-updateDisplay()
-#schedule.every(30).seconds.do(updateDisplay)
-#while True:
-#	schedule.run_pending()
-#	time.sleep(1)
+schedule.every(30).seconds.do(updateDisplay)
+while True:
+	schedule.run_pending()
+	time.sleep(1)
