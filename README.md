@@ -15,6 +15,7 @@ Some sort of internet connection.
 sudo apt-get install libxslt-dev
 sudo apt-get install libxml2-dev
 sudo apt-get install python-pip
+apt-get install python-dev
 sudo pip install lxml
 sudo pip install requests
 sudo pip install schedule
