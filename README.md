@@ -19,7 +19,7 @@ apt-get install python-dev
 sudo pip install lxml
 sudo pip install requests
 sudo pip install schedule
-... unicorn hat setup
+sudo pip install unicornhat
 ```
 
 Why have to sudo python to get Unicorn Hat working? -- looks like this is a 
