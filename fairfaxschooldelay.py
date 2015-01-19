@@ -8,7 +8,7 @@ from lxml import html
 import requests
 import schedule
 import time
-import unicornhat as UH
+#import unicornhat as UH
 
 #####
 # Send data to the Unicorn Hat
@@ -16,6 +16,7 @@ import unicornhat as UH
 def updateLEDs(r, g, b, d):
 	# Fill in LEDs a row at a time from top left
 	# to bottom right
+	return
 	for y in range(8):
 		for x in range(8):
 			UH.set_pixel(x, y, r, g, b)
@@ -101,6 +102,7 @@ def getSchoolStatus():
 #####
 def updateDisplay():
 	# Clear the display
+	# TODO look at using the clear method in the UH library
 	updateLEDs(0, 0, 0, 0)
 
 	# Treating status -1 as not a school day
@@ -140,7 +142,8 @@ def updateDisplay():
 # Entry point, check school status over and over
 #####
 # TODO make the schedule more realistic
-schedule.every(30).seconds.do(updateDisplay)
-while True:
-	schedule.run_pending()
-	time.sleep(1)
+updateDisplay()
+#schedule.every(30).seconds.do(updateDisplay)
+#while True:
+#	schedule.run_pending()
+#	time.sleep(1)
